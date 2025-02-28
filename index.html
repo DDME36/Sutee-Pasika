@@ -2,7 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>เชิญร่วมงานมงคลสมรส</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
@@ -19,11 +20,17 @@
             --white: #ffffff;
             --black: #222222;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+        
+        html {
+            width: 100%;
+            height: 100%;
+            background-color: var(--main-dark-blue); /* สีพื้นหลังสำรอง */
         }
         
         body {
@@ -31,7 +38,26 @@
             overflow-x: hidden;
             color: var(--white);
             position: relative;
-            background: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--main-dark-blue); /* สีพื้นหลังสำรอง */
+            background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        
+        /* พื้นหลังสำรองสำหรับทุกเบราว์เซอร์ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--main-dark-blue);
+            background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
+            z-index: -2;
         }
         
         /* GOLD PARTICLES */
@@ -80,6 +106,7 @@
             z-index: -1;
             background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMDAwMCI+PC9yZWN0Pgo8cGF0aCBkPSJNMCA1TDUgMFpNNiA0TDQgNlpNLTEgMUwxIC0xWiIgc3Ryb2tlPSIjMDEyMjQ0IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+');
             opacity: 0.05;
+            pointer-events: none;
         }
         
         /* AUDIO CONTROL */
@@ -150,7 +177,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.85);
-            z-index: 1000;
+            z-index: 9999; /* z-index สูงเพื่อแสดงทับทุกอย่าง */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -164,6 +191,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
+            display: none; /* เพิ่ม display: none เพื่อให้แน่ใจว่าจะหายไป */
         }
         
         .music-prompt-content {
@@ -225,6 +253,27 @@
             left: 100%;
         }
         
+        /* ปุ่มข้าม */
+        .skip-button {
+            display: inline-block;
+            background: transparent;
+            color: var(--white);
+            padding: 10px 20px;
+            border: 1px solid var(--light-gold);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            font-weight: 300;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif;
+        }
+        
+        .skip-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
         /* CONTAINER */
         .container {
             width: 100%;
@@ -232,7 +281,7 @@
             margin: 0 auto;
             padding: 0 20px;
             position: relative;
-            z-index: 2;
+            z-index: 5;
         }
         
         /* HEADER */
@@ -245,11 +294,13 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            z-index: 5;
+            visibility: visible; /* ทำให้แน่ใจว่า header มองเห็นได้ */
         }
         
         .header-content {
             position: relative;
-            z-index: 5;
+            z-index: 6;
         }
         
         .title-decoration {
@@ -505,6 +556,7 @@
         section {
             padding: 100px 0;
             position: relative;
+            z-index: 5;
         }
         
         .section-title {
@@ -1046,6 +1098,15 @@
             .route-item { width: calc(33.33% - 10px); }
             .route-gallery .last-row .route-item { width: 25%; }
             
+            /* แก้ไขเพิ่มเติมสำหรับมือถือ */
+            body {
+                background-color: var(--main-dark-blue);
+                background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
+                background-attachment: scroll; /* เปลี่ยนเป็น scroll สำหรับมือถือ */
+                background-size: 100% 100vh; /* แก้ขนาดให้ครอบคลุม */
+                min-height: 100vh;
+            }
+            
             .music-prompt-content {
                 padding: 30px 15px;
             }
@@ -1077,6 +1138,13 @@
             .route-item { width: calc(50% - 7.5px); }
             .route-gallery .last-row .route-item { width: 33%; }
             
+            /* แก้ไขเพิ่มเติมสำหรับมือถือเล็ก */
+            body {
+                background-color: var(--main-dark-blue);
+                background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
+                background-size: 100% 100%;
+            }
+            
             .audio-control {
                 bottom: 15px;
                 left: 15px;
@@ -1088,6 +1156,24 @@
                 height: 32px;
             }
         }
+        
+        /* เพิ่ม CSS สำหรับ mobile Safari */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                background-color: var(--main-dark-blue);
+                background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
+                -webkit-background-size: cover;
+                background-size: cover;
+                min-height: 100vh;
+            }
+        }
+        
+        /* สำหรับเบราว์เซอร์ที่ไม่รองรับ linear-gradient */
+        @supports not (background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue))) {
+            body {
+                background-color: var(--main-dark-blue);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1097,6 +1183,7 @@
             <h2>เชิญร่วมงานมงคลสมรส</h2>
             <p>กดปุ่มด้านล่างเพื่อเริ่มฟังเพลงและชมคำเชิญงานแต่งงานของเรา</p>
             <button class="music-prompt-button" id="start-music">เริ่มชมการ์ดเชิญ</button>
+            <button class="skip-button" id="skip-music">ข้ามการฟังเพลง</button>
         </div>
     </div>
 
@@ -1419,6 +1506,7 @@
             // Music prompt and audio handling
             const musicPrompt = document.getElementById('music-prompt');
             const startMusicBtn = document.getElementById('start-music');
+            const skipMusicBtn = document.getElementById('skip-music');
             const audio = document.getElementById('background-audio');
             const playPauseBtn = document.getElementById('play-pause-btn');
             const playIcon = document.getElementById('play-icon');
@@ -1427,40 +1515,74 @@
             // Set initial volume
             audio.volume = 0.4;
             
-            // Handle music prompt
+            // ฟังก์ชันเพื่อให้แน่ใจว่าเนื้อหาแสดงผลหลังจากซ่อน music-prompt
+            function showContent() {
+                // ให้แน่ใจว่า music-prompt ถูกซ่อนอย่างสมบูรณ์
+                musicPrompt.classList.add('hidden');
+                setTimeout(function() {
+                    musicPrompt.style.display = 'none';
+                }, 500);
+                
+                // ทำให้แน่ใจว่าเนื้อหาส่วนอื่นมองเห็นได้
+                document.querySelector('header').style.visibility = 'visible';
+                document.querySelector('header').style.opacity = '1';
+                document.body.style.overflow = 'auto';
+            }
+            
+            // ปุ่มเริ่มต้นฟังเพลง
             startMusicBtn.addEventListener('click', function() {
+                showContent();
+                
                 // Try to play audio
                 audio.play().then(() => {
                     playIcon.style.display = 'none';
                     pauseIcon.style.display = 'block';
-                    musicPrompt.classList.add('hidden');
                 }).catch(error => {
                     // If autoplay failed, still hide the prompt but show the play button
                     console.log("Autoplay failed: ", error);
                     playIcon.style.display = 'block';
                     pauseIcon.style.display = 'none';
-                    musicPrompt.classList.add('hidden');
                 });
+            });
+            
+            // ปุ่มข้ามการฟังเพลง
+            skipMusicBtn.addEventListener('click', function() {
+                showContent();
+                
+                // ไม่เล่นเพลง แต่ให้แน่ใจว่าปุ่มแสดงสถานะถูกต้อง
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
             });
             
             // Different approach for iOS
             function handleFirstInteraction() {
-                // For iOS specifically
-                if (audio.paused) {
-                    audio.play().then(() => {
-                        playIcon.style.display = 'none';
-                        pauseIcon.style.display = 'block';
-                    }).catch(e => {
-                        console.log("Play failed:", e);
-                    });
+                // ตรวจสอบว่าหน้าเว็บพร้อมให้มีการโต้ตอบแล้ว
+                if (document.readyState === 'complete' && musicPrompt.classList.contains('hidden')) {
+                    // เล่นเพลงถ้าสถานะของปุ่มเป็นเล่น
+                    if (playIcon.style.display === 'none' && audio.paused) {
+                        audio.play().then(() => {
+                            playIcon.style.display = 'none';
+                            pauseIcon.style.display = 'block';
+                        }).catch(e => {
+                            console.log("Play failed:", e);
+                        });
+                    }
                 }
                 
-                document.removeEventListener('touchstart', handleFirstInteraction);
-                document.removeEventListener('click', handleFirstInteraction);
+                // เรียกใช้ฟังก์ชันเพื่อบังคับใช้พื้นหลัง
+                enforceMobileBackground();
             }
             
-            document.addEventListener('touchstart', handleFirstInteraction);
-            document.addEventListener('click', handleFirstInteraction);
+            document.addEventListener('touchstart', handleFirstInteraction, {once: true});
+            document.addEventListener('click', handleFirstInteraction, {once: true});
+            
+            // ตรวจสอบการโหลดหน้าเว็บ - ถ้าไม่มีการกดปุ่มในเวลาที่กำหนด จะแสดงเนื้อหาโดยอัตโนมัติ
+            setTimeout(function() {
+                if (!musicPrompt.classList.contains('hidden')) {
+                    console.log("Auto-showing content after timeout");
+                    showContent();
+                }
+            }, 10000); // 10 วินาที
             
             // Play/Pause button functionality
             playPauseBtn.addEventListener('click', function(e) {
@@ -1662,7 +1784,89 @@
                     }
                 }
             }
+            
+            // ฟังก์ชันบังคับใช้พื้นหลังสำหรับมือถือ
+            function enforceMobileBackground() {
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                    document.body.style.backgroundColor = "var(--main-dark-blue)";
+                    document.body.style.backgroundImage = "linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue))";
+                    document.body.style.backgroundAttachment = "scroll";
+                    document.body.style.backgroundSize = "cover";
+                    document.body.style.minHeight = "100vh";
+                    
+                    // เพิ่มการตรวจสอบ Safari บน iOS
+                    if (/iPhone|iPad|iPod/i.test(navigator.userAgent) && /WebKit/i.test(navigator.userAgent)) {
+                        document.body.style.webkitBackgroundSize = "cover";
+                        
+                        // สร้างพื้นหลังสำรองสำหรับ Safari iOS
+                        if (!document.getElementById('safari-bg-fix')) {
+                            const bgFix = document.createElement('div');
+                            bgFix.id = 'safari-bg-fix';
+                            bgFix.style.position = 'fixed';
+                            bgFix.style.top = '0';
+                            bgFix.style.left = '0';
+                            bgFix.style.width = '100%';
+                            bgFix.style.height = '100%';
+                            bgFix.style.backgroundColor = 'var(--main-dark-blue)';
+                            bgFix.style.backgroundImage = 'linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue))';
+                            bgFix.style.zIndex = '0';
+                            document.body.insertBefore(bgFix, document.body.firstChild);
+                        }
+                    }
+                }
+            }
+            
+            // เรียกใช้ฟังก์ชัน
+            enforceMobileBackground();
+            
+            // เรียกซ้ำหลังโหลดหน้าเว็บ
+            window.addEventListener('load', enforceMobileBackground);
+            
+            // เรียกซ้ำเมื่อขนาดหน้าจอเปลี่ยน
+            window.addEventListener('resize', enforceMobileBackground);
+            
+            // แก้ปัญหาการย้าย orientation บนมือถือ
+            window.addEventListener('orientationchange', function() {
+                setTimeout(enforceMobileBackground, 100);
+            });
         });
+    </script>
+
+    <!-- เพิ่ม inline styles เพื่อแก้ปัญหาพื้นหลังสำหรับ iOS Safari -->
+    <script>
+        // ตรวจสอบว่าเป็น iOS Safari หรือไม่
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        if (isIOS || isSafari) {
+            // แทรก CSS แก้ปัญหาพื้นหลังสำหรับ Safari
+            var css = `
+                html, body { 
+                    background-color: #1a2b63 !important; 
+                    min-height: 100% !important;
+                }
+                
+                body:before {
+                    content: '';
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(to bottom, #1a2b63, #4169ab, #324b7d);
+                    z-index: 0;
+                }
+            `;
+            
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+            } else {
+                style.appendChild(document.createTextNode(css));
+            }
+            document.head.appendChild(style);
+        }
     </script>
 </body>
 </html>
