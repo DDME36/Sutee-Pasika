@@ -1655,24 +1655,31 @@
             
             let currentImages = [];
             let currentIndex = 0;
+            let currentType = '';
             
-            function openLightbox(images, index) {
+            function openLightbox(images, index, type) {
                 currentImages = images;
                 currentIndex = index;
+                currentType = type; // เพิ่มตัวแปรเก็บประเภทของรูปภาพ (gallery หรือ route)
                 lightboxImage.src = images[currentIndex].src;
-                if (images === Array.from(galleryItems).map(i => i.querySelector('img'))) {
+                
+                // ตรวจสอบประเภทของรูปภาพแล้วแสดงคำบรรยายที่เหมาะสม
+                if (type === 'gallery') {
                     lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
-                } else {
+                } else if (type === 'route') {
                     lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
                 }
+                
                 lightbox.classList.add('active');
             }
-            
+
             function updateLightbox() {
                 lightboxImage.src = currentImages[currentIndex].src;
-                if (currentImages === Array.from(galleryItems).map(i => i.querySelector('img'))) {
+                
+                // ตรวจสอบประเภทของรูปภาพแล้วแสดงคำบรรยายที่เหมาะสม
+                if (currentType === 'gallery') {
                     lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
-                } else {
+                } else if (currentType === 'route') {
                     lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
                 }
             }
@@ -1680,14 +1687,14 @@
             galleryItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     const images = Array.from(galleryItems).map(i => i.querySelector('img'));
-                    openLightbox(images, index);
+                    openLightbox(images, index, 'gallery'); // เพิ่มพารามิเตอร์ 'gallery'
                 });
             });
-            
+
             routeItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     const images = Array.from(routeItems).map(i => i.querySelector('img'));
-                    openLightbox(images, index);
+                    openLightbox(images, index, 'route'); // เพิ่มพารามิเตอร์ 'route'
                 });
             });
             
