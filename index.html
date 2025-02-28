@@ -30,7 +30,7 @@
         html {
             width: 100%;
             height: 100%;
-            background-color: var(--main-dark-blue); /* สีพื้นหลังสำรอง */
+            background-color: var(--main-dark-blue);
         }
         
         body {
@@ -40,14 +40,13 @@
             position: relative;
             width: 100%;
             min-height: 100vh;
-            background-color: var(--main-dark-blue); /* สีพื้นหลังสำรอง */
+            background-color: var(--main-dark-blue);
             background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: cover;
         }
         
-        /* พื้นหลังสำรองสำหรับทุกเบราว์เซอร์ */
         body::before {
             content: '';
             position: fixed;
@@ -60,7 +59,6 @@
             z-index: -2;
         }
         
-        /* GOLD PARTICLES */
         .gold-particles {
             position: fixed;
             top: 0;
@@ -109,7 +107,6 @@
             pointer-events: none;
         }
         
-        /* AUDIO CONTROL */
         .audio-control {
             position: fixed;
             bottom: 20px;
@@ -169,7 +166,6 @@
             display: none;
         }
         
-        /* MUSIC PROMPT */
         .music-prompt {
             position: fixed;
             top: 0;
@@ -177,7 +173,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.85);
-            z-index: 9999; /* z-index สูงเพื่อแสดงทับทุกอย่าง */
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -191,7 +187,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            display: none; /* เพิ่ม display: none เพื่อให้แน่ใจว่าจะหายไป */
+            display: none;
         }
         
         .music-prompt-content {
@@ -253,7 +249,6 @@
             left: 100%;
         }
         
-        /* ปุ่มข้าม */
         .skip-button {
             display: inline-block;
             background: transparent;
@@ -274,7 +269,6 @@
             background: rgba(255, 255, 255, 0.1);
         }
         
-        /* CONTAINER */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -284,7 +278,6 @@
             z-index: 5;
         }
         
-        /* HEADER */
         header {
             height: 100vh;
             display: flex;
@@ -295,7 +288,7 @@
             position: relative;
             overflow: hidden;
             z-index: 5;
-            visibility: visible; /* ทำให้แน่ใจว่า header มองเห็นได้ */
+            visibility: visible;
         }
         
         .header-content {
@@ -381,7 +374,6 @@
             color: var(--white);
         }
         
-        /* NAVIGATION */
         .navigation {
             position: fixed;
             top: 20px;
@@ -507,7 +499,6 @@
             visibility: visible;
         }
         
-        /* SCROLL DOWN INDICATOR */
         .scroll-down {
             position: absolute;
             bottom: 40px;
@@ -552,7 +543,6 @@
             }
         }
         
-        /* SECTIONS */
         section {
             padding: 100px 0;
             position: relative;
@@ -586,7 +576,6 @@
             z-index: -1;
         }
         
-        /* MAP SECTION */
         .map-section {
             background-color: rgba(0, 0, 20, 0.3);
             position: relative;
@@ -652,7 +641,7 @@
         .map-placeholder {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 ratio */
+            padding-bottom: 56.25%;
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             overflow: hidden;
@@ -680,8 +669,8 @@
         
         .route-item {
             position: relative;
-            width: calc(20% - 12px); /* 5 items per row, accounting for gap */
-            padding-bottom: calc(26.66% - 12px); /* 3:4 ratio adjusted for gap */
+            width: calc(20% - 12px);
+            padding-bottom: calc(26.66% - 12px);
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -752,7 +741,6 @@
             font-family: 'Mali', cursive;
         }
         
-        /* Center the last 4 items */
         .route-gallery .route-item:nth-child(n+11) {
             width: calc(20% - 12px);
         }
@@ -808,7 +796,6 @@
             left: 100%;
         }
         
-        /* GALLERY SECTION */
         .gallery-section {
             background-color: rgba(255, 255, 255, 0.02);
             position: relative;
@@ -886,7 +873,6 @@
             font-family: 'Mali', cursive;
         }
         
-        /* TIMELINE */
         .timeline-section {
             position: relative;
         }
@@ -954,7 +940,6 @@
             color: var(--white);
         }
         
-        /* FOOTER */
         footer {
             background-color: rgba(0, 0, 0, 0.3);
             padding: 50px 0;
@@ -986,7 +971,6 @@
             opacity: 0.6;
         }
         
-        /* LIGHTBOX */
         .lightbox {
             position: fixed;
             top: 0;
@@ -1078,7 +1062,6 @@
             font-size: 1.1rem;
         }
         
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             .title-decoration { font-size: 3.5rem; }
@@ -1098,12 +1081,11 @@
             .route-item { width: calc(33.33% - 10px); }
             .route-gallery .last-row .route-item { width: 25%; }
             
-            /* แก้ไขเพิ่มเติมสำหรับมือถือ */
             body {
                 background-color: var(--main-dark-blue);
                 background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
-                background-attachment: scroll; /* เปลี่ยนเป็น scroll สำหรับมือถือ */
-                background-size: 100% 100vh; /* แก้ขนาดให้ครอบคลุม */
+                background-attachment: scroll;
+                background-size: 100% 100vh;
                 min-height: 100vh;
             }
             
@@ -1138,7 +1120,6 @@
             .route-item { width: calc(50% - 7.5px); }
             .route-gallery .last-row .route-item { width: 33%; }
             
-            /* แก้ไขเพิ่มเติมสำหรับมือถือเล็ก */
             body {
                 background-color: var(--main-dark-blue);
                 background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
@@ -1157,7 +1138,6 @@
             }
         }
         
-        /* เพิ่ม CSS สำหรับ mobile Safari */
         @supports (-webkit-touch-callout: none) {
             body {
                 background-color: var(--main-dark-blue);
@@ -1168,7 +1148,6 @@
             }
         }
         
-        /* สำหรับเบราว์เซอร์ที่ไม่รองรับ linear-gradient */
         @supports not (background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue))) {
             body {
                 background-color: var(--main-dark-blue);
@@ -1177,7 +1156,6 @@
     </style>
 </head>
 <body>
-    <!-- Music Prompt -->
     <div class="music-prompt" id="music-prompt">
         <div class="music-prompt-content">
             <h2>เชิญร่วมงานมงคลสมรส</h2>
@@ -1187,7 +1165,6 @@
         </div>
     </div>
 
-    <!-- Audio Control -->
     <div class="audio-control">
         <button id="play-pause-btn">
             <svg id="play-icon" viewBox="0 0 24 24">
@@ -1204,12 +1181,10 @@
         </audio>
     </div>
 
-    <!-- Gold particles -->
     <div class="gold-particles"></div>
     
     <div class="texture-overlay"></div>
     
-    <!-- Navigation -->
     <div class="navigation">
         <button class="nav-toggle">
             <span></span>
@@ -1227,7 +1202,6 @@
     
     <div class="menu-overlay"></div>
     
-    <!-- Header -->
     <header id="home">
         <div class="header-content" data-aos="fade-up" data-aos-duration="1200">
             <div class="title-decoration">❦</div>
@@ -1253,7 +1227,6 @@
         </div>
     </header>
     
-    <!-- Map Section -->
     <section id="map" class="map-section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
@@ -1371,7 +1344,6 @@
         </div>
     </section>
     
-    <!-- Gallery Section -->
     <section id="gallery" class="gallery-section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
@@ -1419,7 +1391,6 @@
         </div>
     </section>
     
-    <!-- Timeline Section -->
     <section id="timeline" class="timeline-section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
@@ -1449,7 +1420,6 @@
         </div>
     </section>
     
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -1464,7 +1434,6 @@
         </div>
     </footer>
     
-    <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
         <div class="lightbox-content">
             <img src="" alt="" class="lightbox-image" id="lightbox-image">
@@ -1479,16 +1448,14 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // Initialize AOS
         AOS.init({
             duration: 800,
             easing: 'ease-in-out',
             once: true,
             mirror: false
         });
-        
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Create gold particles
             const particlesContainer = document.querySelector('.gold-particles');
             const particleCount = 50;
             for (let i = 0; i < particleCount; i++) {
@@ -1502,8 +1469,7 @@
                 particle.style.animationDelay = Math.random() * 10 + 's';
                 particlesContainer.appendChild(particle);
             }
-            
-            // Music prompt and audio handling
+
             const musicPrompt = document.getElementById('music-prompt');
             const startMusicBtn = document.getElementById('start-music');
             const skipMusicBtn = document.getElementById('skip-music');
@@ -1511,54 +1477,39 @@
             const playPauseBtn = document.getElementById('play-pause-btn');
             const playIcon = document.getElementById('play-icon');
             const pauseIcon = document.getElementById('pause-icon');
-            
-            // Set initial volume
+
             audio.volume = 0.4;
-            
-            // ฟังก์ชันเพื่อให้แน่ใจว่าเนื้อหาแสดงผลหลังจากซ่อน music-prompt
+
             function showContent() {
-                // ให้แน่ใจว่า music-prompt ถูกซ่อนอย่างสมบูรณ์
                 musicPrompt.classList.add('hidden');
                 setTimeout(function() {
                     musicPrompt.style.display = 'none';
                 }, 500);
-                
-                // ทำให้แน่ใจว่าเนื้อหาส่วนอื่นมองเห็นได้
                 document.querySelector('header').style.visibility = 'visible';
                 document.querySelector('header').style.opacity = '1';
                 document.body.style.overflow = 'auto';
             }
-            
-            // ปุ่มเริ่มต้นฟังเพลง
+
             startMusicBtn.addEventListener('click', function() {
                 showContent();
-                
-                // Try to play audio
                 audio.play().then(() => {
                     playIcon.style.display = 'none';
                     pauseIcon.style.display = 'block';
                 }).catch(error => {
-                    // If autoplay failed, still hide the prompt but show the play button
                     console.log("Autoplay failed: ", error);
                     playIcon.style.display = 'block';
                     pauseIcon.style.display = 'none';
                 });
             });
-            
-            // ปุ่มข้ามการฟังเพลง
+
             skipMusicBtn.addEventListener('click', function() {
                 showContent();
-                
-                // ไม่เล่นเพลง แต่ให้แน่ใจว่าปุ่มแสดงสถานะถูกต้อง
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
             });
-            
-            // Different approach for iOS
+
             function handleFirstInteraction() {
-                // ตรวจสอบว่าหน้าเว็บพร้อมให้มีการโต้ตอบแล้ว
                 if (document.readyState === 'complete' && musicPrompt.classList.contains('hidden')) {
-                    // เล่นเพลงถ้าสถานะของปุ่มเป็นเล่น
                     if (playIcon.style.display === 'none' && audio.paused) {
                         audio.play().then(() => {
                             playIcon.style.display = 'none';
@@ -1568,23 +1519,19 @@
                         });
                     }
                 }
-                
-                // เรียกใช้ฟังก์ชันเพื่อบังคับใช้พื้นหลัง
                 enforceMobileBackground();
             }
-            
+
             document.addEventListener('touchstart', handleFirstInteraction, {once: true});
             document.addEventListener('click', handleFirstInteraction, {once: true});
-            
-            // ตรวจสอบการโหลดหน้าเว็บ - ถ้าไม่มีการกดปุ่มในเวลาที่กำหนด จะแสดงเนื้อหาโดยอัตโนมัติ
+
             setTimeout(function() {
                 if (!musicPrompt.classList.contains('hidden')) {
                     console.log("Auto-showing content after timeout");
                     showContent();
                 }
-            }, 10000); // 10 วินาที
-            
-            // Play/Pause button functionality
+            }, 10000);
+
             playPauseBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (audio.paused) {
@@ -1597,8 +1544,7 @@
                     pauseIcon.style.display = 'none';
                 }
             });
-            
-            // Navigation Toggle
+
             const navToggle = document.querySelector('.nav-toggle');
             const navMenu = document.querySelector('.nav-menu');
             const menuOverlay = document.querySelector('.menu-overlay');
@@ -1612,8 +1558,7 @@
                 navMenu.classList.remove('active');
                 this.classList.remove('active');
             });
-            
-            // Smooth scroll
+
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1633,8 +1578,7 @@
                     }
                 });
             });
-            
-            // Scroll indicator
+
             document.getElementById('scroll-down').addEventListener('click', function() {
                 const mapSection = document.getElementById('map');
                 window.scrollTo({
@@ -1642,8 +1586,7 @@
                     behavior: 'smooth'
                 });
             });
-            
-            // Gallery lightbox
+
             const galleryItems = document.querySelectorAll('.gallery-item');
             const routeItems = document.querySelectorAll('.route-item');
             const lightbox = document.getElementById('lightbox');
@@ -1652,73 +1595,67 @@
             const lightboxClose = document.getElementById('lightbox-close');
             const lightboxPrev = document.getElementById('lightbox-prev');
             const lightboxNext = document.getElementById('lightbox-next');
-            
+
             let currentImages = [];
             let currentIndex = 0;
             let currentType = '';
-            
+
             function openLightbox(images, index, type) {
                 currentImages = images;
                 currentIndex = index;
-                currentType = type; // เพิ่มตัวแปรเก็บประเภทของรูปภาพ (gallery หรือ route)
+                currentType = type;
                 lightboxImage.src = images[currentIndex].src;
-                
-                // ตรวจสอบประเภทของรูปภาพแล้วแสดงคำบรรยายที่เหมาะสม
                 if (type === 'gallery') {
                     lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
                 } else if (type === 'route') {
                     lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
                 }
-                
                 lightbox.classList.add('active');
             }
 
             function updateLightbox() {
                 lightboxImage.src = currentImages[currentIndex].src;
-                
-                // ตรวจสอบประเภทของรูปภาพแล้วแสดงคำบรรยายที่เหมาะสม
                 if (currentType === 'gallery') {
                     lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
                 } else if (currentType === 'route') {
                     lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
                 }
             }
-            
+
             galleryItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     const images = Array.from(galleryItems).map(i => i.querySelector('img'));
-                    openLightbox(images, index, 'gallery'); // เพิ่มพารามิเตอร์ 'gallery'
+                    openLightbox(images, index, 'gallery');
                 });
             });
 
             routeItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     const images = Array.from(routeItems).map(i => i.querySelector('img'));
-                    openLightbox(images, index, 'route'); // เพิ่มพารามิเตอร์ 'route'
+                    openLightbox(images, index, 'route');
                 });
             });
-            
+
             lightboxClose.addEventListener('click', function() {
                 lightbox.classList.remove('active');
             });
-            
+
             lightbox.addEventListener('click', function(e) {
                 if (e.target === this) {
                     this.classList.remove('active');
                 }
             });
-            
+
             lightboxPrev.addEventListener('click', function() {
                 currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
                 updateLightbox();
             });
-            
+
             lightboxNext.addEventListener('click', function() {
                 currentIndex = (currentIndex + 1) % currentImages.length;
                 updateLightbox();
             });
-            
-            // Active menu on scroll
+
             window.addEventListener('scroll', function() {
                 const scrollPosition = window.scrollY;
                 document.querySelectorAll('section').forEach(section => {
@@ -1742,8 +1679,7 @@
                     navigation.style.opacity = '0';
                 }
             });
-            
-            // Keyboard navigation for lightbox
+
             document.addEventListener('keydown', function(e) {
                 if (lightbox.classList.contains('active')) {
                     if (e.key === 'Escape') {
@@ -1757,42 +1693,36 @@
                     }
                 }
             });
-            
-            // Optimize for mobile
+
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                // Reduce particle count on mobile
                 while (particlesContainer.childElementCount > 25) {
                     particlesContainer.removeChild(particlesContainer.lastChild);
                 }
-                
-                // Add swipe detection for lightbox
+
                 let touchstartX = 0;
                 let touchendX = 0;
-                
+
                 lightbox.addEventListener('touchstart', function(e) {
                     touchstartX = e.changedTouches[0].screenX;
                 });
-                
+
                 lightbox.addEventListener('touchend', function(e) {
                     touchendX = e.changedTouches[0].screenX;
                     handleSwipe();
                 });
-                
+
                 function handleSwipe() {
                     if (touchendX < touchstartX - 50) {
-                        // Swipe left, go to next
                         currentIndex = (currentIndex + 1) % currentImages.length;
                         updateLightbox();
                     }
                     if (touchendX > touchstartX + 50) {
-                        // Swipe right, go to previous
                         currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
                         updateLightbox();
                     }
                 }
             }
-            
-            // ฟังก์ชันบังคับใช้พื้นหลังสำหรับมือถือ
+
             function enforceMobileBackground() {
                 if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
                     document.body.style.backgroundColor = "var(--main-dark-blue)";
@@ -1800,12 +1730,9 @@
                     document.body.style.backgroundAttachment = "scroll";
                     document.body.style.backgroundSize = "cover";
                     document.body.style.minHeight = "100vh";
-                    
-                    // เพิ่มการตรวจสอบ Safari บน iOS
+
                     if (/iPhone|iPad|iPod/i.test(navigator.userAgent) && /WebKit/i.test(navigator.userAgent)) {
                         document.body.style.webkitBackgroundSize = "cover";
-                        
-                        // สร้างพื้นหลังสำรองสำหรับ Safari iOS
                         if (!document.getElementById('safari-bg-fix')) {
                             const bgFix = document.createElement('div');
                             bgFix.id = 'safari-bg-fix';
@@ -1822,31 +1749,21 @@
                     }
                 }
             }
-            
-            // เรียกใช้ฟังก์ชัน
+
             enforceMobileBackground();
-            
-            // เรียกซ้ำหลังโหลดหน้าเว็บ
             window.addEventListener('load', enforceMobileBackground);
-            
-            // เรียกซ้ำเมื่อขนาดหน้าจอเปลี่ยน
             window.addEventListener('resize', enforceMobileBackground);
-            
-            // แก้ปัญหาการย้าย orientation บนมือถือ
             window.addEventListener('orientationchange', function() {
                 setTimeout(enforceMobileBackground, 100);
             });
         });
     </script>
 
-    <!-- เพิ่ม inline styles เพื่อแก้ปัญหาพื้นหลังสำหรับ iOS Safari -->
     <script>
-        // ตรวจสอบว่าเป็น iOS Safari หรือไม่
         var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         
         if (isIOS || isSafari) {
-            // แทรก CSS แก้ปัญหาพื้นหลังสำหรับ Safari
             var css = `
                 html, body { 
                     background-color: #1a2b63 !important; 
