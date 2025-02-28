@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เชิญร่วมงานมงคลสมรส</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Mali:wght@300;400;500;700&family=Prompt:wght@200;300;400;500;700&display=swap');
+        
+        :root {
+            --main-dark-blue: #1a2b63;
+            --main-royal-blue: #324b7d;
+            --main-medium-blue: #4169ab;
+            --main-light-blue: #d9e5f6;
+            --gold: #d4af37;
+            --light-gold: #f2e1a8;
+            --white: #ffffff;
+            --black: #222222;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            overflow-x: hidden;
+            color: var(--white);
+            position: relative;
+            background: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
+        }
+        
+        /* GOLD PARTICLES */
+        .gold-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background-color: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 12s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) translateX(50px) rotate(360deg);
+            }
+        }
+        
+        .texture-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMDAwMCI+PC9yZWN0Pgo8cGF0aCBkPSJNMCA1TDUgMFpNNiA0TDQgNlpNLTEgMUwxIC0xWiIgc3Ryb2tlPSIjMDEyMjQ0IiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+');
+            opacity: 0.05;
+        }
+        
+        /* AUDIO CONTROL */
+        .audio-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .audio-control:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .audio-control button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .audio-control button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+        
+        .audio-control button svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--white);
+        }
+        
+        .audio-label {
+            color: var(--white);
+            font-size: 0.9rem;
+            margin-left: 5px;
+            display: none;
+        }
+        
+        .audio-control:hover .audio-label {
+            display: block;
+        }
+        
+        .audio-control audio {
+            display: none;
+        }
+        
+        /* MUSIC PROMPT */
+        .music-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .music-prompt.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        
+        .music-prompt-content {
+            max-width: 500px;
+            padding: 40px 20px;
+        }
+        
+        .music-prompt h2 {
+            font-family: 'Charm', cursive;
+            font-size: 2.5rem;
+            color: var(--light-gold);
+            margin-bottom: 20px;
+        }
+        
+        .music-prompt p {
+            font-family: 'Mali', cursive;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .music-prompt-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--light-gold));
+            color: var(--main-dark-blue);
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            text-decoration: none;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            font-family: 'Prompt', sans-serif;
+        }
+        
+        .music-prompt-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+        
+        .music-prompt-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .music-prompt-button:hover::before {
+            left: 100%;
+        }
+        
+        /* CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* HEADER */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 5;
+        }
+        
+        .title-decoration {
+            font-size: 5rem;
+            color: var(--gold);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-family: 'Charm', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-family: 'Mali', cursive;
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--light-gold);
+        }
+        
+        .names {
+            font-family: 'Charm', cursive;
+            font-size: 2.5rem;
+            margin: 2rem 0;
+            color: var(--light-gold);
+        }
+        
+        .and {
+            font-family: 'Mali', cursive;
+            display: inline-block;
+            margin: 0 1rem;
+            font-size: 1.5rem;
+            opacity: 0.8;
+            vertical-align: middle;
+        }
+        
+        .date-container {
+            padding: 1.5rem;
+            border: 1px solid var(--gold);
+            display: inline-block;
+            margin-top: 2rem;
+            position: relative;
+        }
+        
+        .date-container::before,
+        .date-container::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--gold);
+        }
+        
+        .date-container::before {
+            top: -10px;
+            left: -10px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .date-container::after {
+            bottom: -10px;
+            right: -10px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .date {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--white);
+        }
+        
+        /* NAVIGATION */
+        .navigation {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .nav-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--white);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle span::before,
+        .nav-toggle span::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background-color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle span::before {
+            top: -8px;
+        }
+        
+        .nav-toggle span::after {
+            bottom: -8px;
+        }
+        
+        .nav-toggle.active span {
+            background-color: transparent;
+        }
+        
+        .nav-toggle.active span::before {
+            top: 0;
+            transform: rotate(45deg);
+        }
+        
+        .nav-toggle.active span::after {
+            bottom: 0;
+            transform: rotate(-45deg);
+        }
+        
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: var(--main-royal-blue);
+            z-index: 99;
+            transition: all 0.5s ease;
+            padding: 100px 30px 30px;
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-menu.active {
+            right: 0;
+        }
+        
+        .nav-menu ul {
+            list-style: none;
+        }
+        
+        .nav-menu ul li {
+            margin-bottom: 20px;
+        }
+        
+        .nav-menu ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: block;
+            padding: 10px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu ul li a:hover,
+        .nav-menu ul li a.active {
+            border-left-color: var(--gold);
+            padding-left: 20px;
+            color: var(--light-gold);
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 98;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* SCROLL DOWN INDICATOR */
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .scroll-down span {
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid var(--light-gold);
+            border-right: 2px solid var(--light-gold);
+            transform: rotate(45deg);
+            margin: -5px;
+            animation: scroll 2s infinite;
+        }
+        
+        .scroll-down span:nth-child(2) {
+            animation-delay: -0.2s;
+        }
+        
+        .scroll-down span:nth-child(3) {
+            animation-delay: -0.4s;
+        }
+        
+        @keyframes scroll {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-10px, -10px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(10px, 10px);
+            }
+        }
+        
+        /* SECTIONS */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-family: 'Charm', cursive;
+            font-size: 2.5rem;
+            display: inline-block;
+            padding: 0 50px;
+            color: var(--light-gold);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title h2::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--gold);
+            z-index: -1;
+        }
+        
+        /* MAP SECTION */
+        .map-section {
+            background-color: rgba(0, 0, 20, 0.3);
+            position: relative;
+        }
+        
+        .map-container {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .map-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 1px solid var(--gold);
+            border-radius: 25px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        
+        .map-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .map-info {
+            margin-bottom: 30px;
+        }
+        
+        .map-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--light-gold);
+            font-family: 'Charm', cursive;
+        }
+        
+        .map-address {
+            font-family: 'Mali', cursive;
+            line-height: 1.6;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+        
+        .coordinates {
+            font-family: monospace;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--light-gold);
+        }
+        
+        .map-placeholder {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 ratio */
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .map-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .route-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: space-between;
+        }
+        
+        .route-item {
+            position: relative;
+            width: calc(20% - 12px); /* 5 items per row, accounting for gap */
+            padding-bottom: calc(26.66% - 12px); /* 3:4 ratio adjusted for gap */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .route-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .route-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .route-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .route-item:nth-child(odd) {
+            animation: float-up-down 4s infinite ease-in-out;
+        }
+        
+        .route-item:nth-child(even) {
+            animation: float-left-right 5s infinite ease-in-out;
+        }
+        
+        @keyframes float-up-down {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        
+        @keyframes float-left-right {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .route-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .route-item:hover .route-overlay {
+            opacity: 1;
+        }
+        
+        .route-caption {
+            color: var(--white);
+            font-size: 1rem;
+            font-family: 'Mali', cursive;
+        }
+        
+        /* Center the last 4 items */
+        .route-gallery .route-item:nth-child(n+11) {
+            width: calc(20% - 12px);
+        }
+        
+        .route-gallery .last-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .route-gallery .last-row .route-item {
+            width: 20%;
+        }
+        
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--light-gold));
+            color: var(--main-dark-blue);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .button:hover::before {
+            left: 100%;
+        }
+        
+        /* GALLERY SECTION */
+        .gallery-section {
+            background-color: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 250px);
+            gap: 20px;
+            height: 520px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; animation: float-up-down 4s infinite ease-in-out; }
+        .gallery-item:nth-child(2) { grid-column: 2 / 3; grid-row: 1 / 2; animation: float-left-right 5s infinite ease-in-out; }
+        .gallery-item:nth-child(3) { grid-column: 3 / 4; grid-row: 1 / 2; animation: float-up-down 6s infinite ease-in-out; }
+        .gallery-item:nth-child(4) { grid-column: 1 / 2; grid-row: 2 / 3; animation: float-left-right 7s infinite ease-in-out; }
+        .gallery-item:nth-child(5) { grid-column: 2 / 3; grid-row: 2 / 3; animation: float-up-down 5s infinite ease-in-out; }
+        .gallery-item:nth-child(6) { grid-column: 3 / 4; grid-row: 2 / 3; animation: float-left-right 6s infinite ease-in-out; }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: all 0.5s ease;
+        }
+        
+        .gallery-item:nth-child(1) .gallery-image { transform: scale(1.8); object-position: 0% 25%; }
+        .gallery-item:nth-child(2) .gallery-image { transform: scale(2); object-position: 40% 40%; }
+        .gallery-item:nth-child(3) .gallery-image { object-position: center 10%; }
+        .gallery-item:nth-child(4) .gallery-image { transform: scale(2.2); object-position: 60% 40%; }
+        .gallery-item:nth-child(5) .gallery-image { transform: scale(1.8); object-position: 48% 40%; }
+        .gallery-item:nth-child(6) .gallery-image { transform: scale(1); object-position: center 15%; }
+        
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-caption {
+            color: var(--white);
+            font-size: 1.1rem;
+            font-family: 'Mali', cursive;
+        }
+        
+        /* TIMELINE */
+        .timeline-section {
+            position: relative;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background-color: var(--gold);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+        
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--light-gold);
+            border: 4px solid var(--gold);
+            top: 22px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left { left: 0; }
+        .right { left: 50%; }
+        .right::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px 30px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-time {
+            font-weight: 700;
+            color: var(--light-gold);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .timeline-event {
+            font-family: 'Mali', cursive;
+            color: var(--white);
+        }
+        
+        /* FOOTER */
+        footer {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 50px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            font-family: 'Charm', cursive;
+            font-size: 2rem;
+            color: var(--light-gold);
+            margin-bottom: 20px;
+        }
+        
+        .footer-text {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: var(--white);
+            opacity: 0.8;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: var(--white);
+            opacity: 0.6;
+        }
+        
+        /* LIGHTBOX */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border: 5px solid var(--white);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        
+        .lightbox-prev, .lightbox-next {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 2rem;
+            color: var(--white);
+        }
+        
+        .lightbox-prev:hover, .lightbox-next:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        
+        .lightbox-prev {
+            margin-left: 20px;
+        }
+        
+        .lightbox-next {
+            margin-right: 20px;
+        }
+        
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: var(--white);
+            font-family: 'Mali', cursive;
+            font-size: 1.1rem;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .title-decoration { font-size: 3.5rem; }
+            .subtitle { font-size: 1.2rem; }
+            .names { font-size: 2rem; }
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 20px; }
+            .timeline-item::after { left: 21px; top: 22px; }
+            .right { left: 0; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 200px); height: 620px; }
+            .gallery-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
+            .gallery-item:nth-child(2) { grid-column: 2 / 3; grid-row: 1 / 2; }
+            .gallery-item:nth-child(3) { grid-column: 1 / 2; grid-row: 2 / 3; }
+            .gallery-item:nth-child(4) { grid-column: 2 / 3; grid-row: 2 / 3; }
+            .gallery-item:nth-child(5) { grid-column: 1 / 2; grid-row: 3 / 4; }
+            .gallery-item:nth-child(6) { grid-column: 2 / 3; grid-row: 3 / 4; }
+            .route-item { width: calc(33.33% - 10px); }
+            .route-gallery .last-row .route-item { width: 25%; }
+            
+            .music-prompt-content {
+                padding: 30px 15px;
+            }
+            
+            .music-prompt h2 {
+                font-size: 2rem;
+            }
+            
+            .music-prompt p {
+                font-size: 1rem;
+            }
+            
+            .music-prompt-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            section { padding: 70px 0; }
+            .section-title h2 { font-size: 2rem; padding: 0 30px; }
+            .gallery-grid { grid-template-columns: 1fr; grid-template-rows: repeat(6, 200px); height: 1260px; }
+            .gallery-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
+            .gallery-item:nth-child(2) { grid-column: 1 / 2; grid-row: 2 / 3; }
+            .gallery-item:nth-child(3) { grid-column: 1 / 2; grid-row: 3 / 4; }
+            .gallery-item:nth-child(4) { grid-column: 1 / 2; grid-row: 4 / 5; }
+            .gallery-item:nth-child(5) { grid-column: 1 / 2; grid-row: 5 / 6; }
+            .gallery-item:nth-child(6) { grid-column: 1 / 2; grid-row: 6 / 7; }
+            .route-item { width: calc(50% - 7.5px); }
+            .route-gallery .last-row .route-item { width: 33%; }
+            
+            .audio-control {
+                bottom: 15px;
+                left: 15px;
+                padding: 5px 10px;
+            }
+            
+            .audio-control button {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Music Prompt -->
+    <div class="music-prompt" id="music-prompt">
+        <div class="music-prompt-content">
+            <h2>เชิญร่วมงานมงคลสมรส</h2>
+            <p>กดปุ่มด้านล่างเพื่อเริ่มฟังเพลงและชมคำเชิญงานแต่งงานของเรา</p>
+            <button class="music-prompt-button" id="start-music">เริ่มชมการ์ดเชิญ</button>
+        </div>
+    </div>
+
+    <!-- Audio Control -->
+    <div class="audio-control">
+        <button id="play-pause-btn">
+            <svg id="play-icon" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg id="pause-icon" viewBox="0 0 24 24" style="display: none;">
+                <path d="M6 19h4V5H6zm8-14v14h4V5z"/>
+            </svg>
+        </button>
+        <span class="audio-label">เปิด/ปิดเพลง</span>
+        <audio id="background-audio" loop>
+            <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <!-- Gold particles -->
+    <div class="gold-particles"></div>
+    
+    <div class="texture-overlay"></div>
+    
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-toggle">
+            <span></span>
+        </button>
+    </div>
+    
+    <div class="nav-menu">
+        <ul>
+            <li><a href="#home" class="active">หน้าแรก</a></li>
+            <li><a href="#map">แผนที่และเส้นทาง</a></li>
+            <li><a href="#gallery">ภาพพรีเวดดิ้ง</a></li>
+            <li><a href="#timeline">กำหนดการ</a></li>
+        </ul>
+    </div>
+    
+    <div class="menu-overlay"></div>
+    
+    <!-- Header -->
+    <header id="home">
+        <div class="header-content" data-aos="fade-up" data-aos-duration="1200">
+            <div class="title-decoration">❦</div>
+            <h1>เชิญร่วมงานมงคลสมรส</h1>
+            <p class="subtitle">ด้วยความยินดี ขอเรียนเชิญท่านมาร่วมเป็นเกียรติในวันพิเศษของเรา</p>
+            
+            <div class="names">
+                <span>คุณสุธี</span>
+                <span class="and">&</span>
+                <span>คุณพสิกา</span>
+            </div>
+            
+            <div class="date-container">
+                <div class="date">วันอาทิตย์ที่ 2 มีนาคม 2568</div>
+                <div class="date">ณ 67/1 บ้านแม่แรม ตำบลเตาปูน อำเภอเมือง จังหวัดแพร่</div>
+            </div>
+        </div>
+        
+        <div class="scroll-down" id="scroll-down">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+    
+    <!-- Map Section -->
+    <section id="map" class="map-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>แผนที่และเส้นทางเดินทาง</h2>
+            </div>
+            
+            <div class="map-container" data-aos="fade-up" data-aos-delay="200">
+                <div class="map-info">
+                    <h3 class="map-title">สถานที่จัดงาน</h3>
+                    <p class="map-address">
+                        ณ 67/1 บ้านแม่แรม<br>
+                        ตำบลเตาปูน อำเภอสอง<br>
+                        จังหวัดแพร่ 54120
+                    </p>
+                    <div class="coordinates">18°28'36.9"N 100°23'58.8"E</div>
+                </div>
+                
+                <div class="map-placeholder">
+                    <img src="assets/images/map/venue-map.png" alt="แผนที่สถานที่จัดงาน" class="map-image">
+                </div>
+                
+                <a href="https://www.google.com/maps/place/18%C2%B028'36.9%22N+100%C2%B023'58.8%22E/@18.4769124,100.3996662,17z/data=!3m1!4b1!4m4!3m3!8m2!3d18.4769124!4d100.3996662?entry=ttu&g_ep=EgoyMDI1MDIyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="button">
+                    นำทางด้วย Google Maps
+                </a>
+                
+                <div class="route-gallery">
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="100">
+                        <img src="assets/images/route/route1.jpg" alt="เส้นทาง 1">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 1/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="200">
+                        <img src="assets/images/route/route2.jpg" alt="เส้นทาง 2">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 2/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="300">
+                        <img src="assets/images/route/route3.jpg" alt="เส้นทาง 3">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 3/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="400">
+                        <img src="assets/images/route/route4.jpg" alt="เส้นทาง 4">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 4/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="500">
+                        <img src="assets/images/route/route5.jpg" alt="เส้นทาง 5">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 5/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="600">
+                        <img src="assets/images/route/route6.jpg" alt="เส้นทาง 6">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 6/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="700">
+                        <img src="assets/images/route/route7.jpg" alt="เส้นทาง 7">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 7/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="800">
+                        <img src="assets/images/route/route8.jpg" alt="เส้นทาง 8">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 8/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="900">
+                        <img src="assets/images/route/route9.jpg" alt="เส้นทาง 9">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 9/14</div>
+                        </div>
+                    </div>
+                    <div class="route-item" data-aos="fade-up" data-aos-delay="1000">
+                        <img src="assets/images/route/route10.jpg" alt="เส้นทาง 10">
+                        <div class="route-overlay">
+                            <div class="route-caption">เส้นทาง 10/14</div>
+                        </div>
+                    </div>
+                    <div class="last-row">
+                        <div class="route-item" data-aos="fade-up" data-aos-delay="1100">
+                            <img src="assets/images/route/route11.jpg" alt="เส้นทาง 11">
+                            <div class="route-overlay">
+                                <div class="route-caption">เส้นทาง 11/14</div>
+                            </div>
+                        </div>
+                        <div class="route-item" data-aos="fade-up" data-aos-delay="1200">
+                            <img src="assets/images/route/route12.jpg" alt="เส้นทาง 12">
+                            <div class="route-overlay">
+                                <div class="route-caption">เส้นทาง 12/14</div>
+                            </div>
+                        </div>
+                        <div class="route-item" data-aos="fade-up" data-aos-delay="1300">
+                            <img src="assets/images/route/route13.jpg" alt="เส้นทาง 13">
+                            <div class="route-overlay">
+                                <div class="route-caption">เส้นทาง 13/14</div>
+                            </div>
+                        </div>
+                        <div class="route-item" data-aos="fade-up" data-aos-delay="1400">
+                            <img src="assets/images/route/route14.jpg" alt="เส้นทาง 14">
+                            <div class="route-overlay">
+                                <div class="route-caption">เส้นทาง 14/14</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>ภาพพรีเวดดิ้ง</h2>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                    <img src="assets/images/gallery/prewedding1.jpg" alt="ภาพพรีเวดดิ้ง 1" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-caption">ช่วงเวลาแห่งความสุข</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                    <img src="assets/images/gallery/prewedding2.jpg" alt="ภาพพรีเวดดิ้ง 2" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-caption">ความรักที่งดงาม</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="300">
+                    <img src="assets/images/gallery/prewedding3.jpg" alt="ภาพพรีเวดดิ้ง 3" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-caption">เริ่มต้นชีวิตคู่</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
+                    <img src="assets/images/gallery/prewedding4.jpg" alt="ภาพพรีเวดดิ้ง 4" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-caption">ความทรงจำแสนพิเศษ</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="500">
+                    <img src="assets/images/gallery/prewedding5.jpg" alt="ภาพพรีเวดดิ้ง 5" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-caption">เส้นทางแห่งรัก</div>
+                    </div>
+                </div>
+                <div class="gallery-item" data-aos="fade-up" data-aos-delay="600">
+                    <img src="assets/images/gallery/prewedding6.jpg" alt="ภาพพรีเวดดิ้ง 6" class="gallery-image">
+                    <div class="gallery-overlay">
+                        <div class="gallery-caption">รักนิรันดร์</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Timeline Section -->
+    <section id="timeline" class="timeline-section">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>กำหนดการ</h2>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <div class="timeline-time">09:00 น.</div>
+                        <div class="timeline-event">เริ่มพิธีหมั้น</div>
+                    </div>
+                </div>
+                <div class="timeline-item right" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <div class="timeline-time">10:00 น.</div>
+                        <div class="timeline-event">พิธีตามประเพณี</div>
+                    </div>
+                </div>
+                <div class="timeline-item left" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <div class="timeline-time">12:00 น.</div>
+                        <div class="timeline-event">รับประทานอาหารกลางวัน</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">❦ เจ้าบ่าว & เจ้าสาว ❦</div>
+                <p class="footer-text">
+                    ขอขอบคุณทุกท่านที่มาร่วมเป็นเกียรติและแบ่งปันช่วงเวลาแห่งความสุขในวันพิเศษของเรา
+                </p>
+                <div class="copyright">
+                    © 2025 คุณเจ้าบ่าว & คุณเจ้าสาว - All Rights Reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-image" id="lightbox-image">
+            <button class="lightbox-close" id="lightbox-close">×</button>
+            <div class="lightbox-nav">
+                <button class="lightbox-prev" id="lightbox-prev">‹</button>
+                <button class="lightbox-next" id="lightbox-next">›</button>
+            </div>
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create gold particles
+            const particlesContainer = document.querySelector('.gold-particles');
+            const particleCount = 50;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 5 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Music prompt and audio handling
+            const musicPrompt = document.getElementById('music-prompt');
+            const startMusicBtn = document.getElementById('start-music');
+            const audio = document.getElementById('background-audio');
+            const playPauseBtn = document.getElementById('play-pause-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            
+            // Set initial volume
+            audio.volume = 0.4;
+            
+            // Handle music prompt
+            startMusicBtn.addEventListener('click', function() {
+                // Try to play audio
+                audio.play().then(() => {
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                    musicPrompt.classList.add('hidden');
+                }).catch(error => {
+                    // If autoplay failed, still hide the prompt but show the play button
+                    console.log("Autoplay failed: ", error);
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                    musicPrompt.classList.add('hidden');
+                });
+            });
+            
+            // Different approach for iOS
+            function handleFirstInteraction() {
+                // For iOS specifically
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        playIcon.style.display = 'none';
+                        pauseIcon.style.display = 'block';
+                    }).catch(e => {
+                        console.log("Play failed:", e);
+                    });
+                }
+                
+                document.removeEventListener('touchstart', handleFirstInteraction);
+                document.removeEventListener('click', handleFirstInteraction);
+            }
+            
+            document.addEventListener('touchstart', handleFirstInteraction);
+            document.addEventListener('click', handleFirstInteraction);
+            
+            // Play/Pause button functionality
+            playPauseBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (audio.paused) {
+                    audio.play();
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                } else {
+                    audio.pause();
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                }
+            });
+            
+            // Navigation Toggle
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            navToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+            });
+            menuOverlay.addEventListener('click', function() {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                this.classList.remove('active');
+            });
+            
+            // Smooth scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop,
+                            behavior: 'smooth'
+                        });
+                        document.querySelectorAll('.nav-menu a').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    }
+                });
+            });
+            
+            // Scroll indicator
+            document.getElementById('scroll-down').addEventListener('click', function() {
+                const mapSection = document.getElementById('map');
+                window.scrollTo({
+                    top: mapSection.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Gallery lightbox
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const routeItems = document.querySelectorAll('.route-item');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const lightboxClose = document.getElementById('lightbox-close');
+            const lightboxPrev = document.getElementById('lightbox-prev');
+            const lightboxNext = document.getElementById('lightbox-next');
+            
+            let currentImages = [];
+            let currentIndex = 0;
+            
+            function openLightbox(images, index) {
+                currentImages = images;
+                currentIndex = index;
+                lightboxImage.src = images[currentIndex].src;
+                if (images === Array.from(galleryItems).map(i => i.querySelector('img'))) {
+                    lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
+                } else {
+                    lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
+                }
+                lightbox.classList.add('active');
+            }
+            
+            function updateLightbox() {
+                lightboxImage.src = currentImages[currentIndex].src;
+                if (currentImages === Array.from(galleryItems).map(i => i.querySelector('img'))) {
+                    lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
+                } else {
+                    lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
+                }
+            }
+            
+            galleryItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    const images = Array.from(galleryItems).map(i => i.querySelector('img'));
+                    openLightbox(images, index);
+                });
+            });
+            
+            routeItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    const images = Array.from(routeItems).map(i => i.querySelector('img'));
+                    openLightbox(images, index);
+                });
+            });
+            
+            lightboxClose.addEventListener('click', function() {
+                lightbox.classList.remove('active');
+            });
+            
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+            
+            lightboxPrev.addEventListener('click', function() {
+                currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                updateLightbox();
+            });
+            
+            lightboxNext.addEventListener('click', function() {
+                currentIndex = (currentIndex + 1) % currentImages.length;
+                updateLightbox();
+            });
+            
+            // Active menu on scroll
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY;
+                document.querySelectorAll('section').forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        document.querySelectorAll('.nav-menu a').forEach(item => {
+                            item.classList.remove('active');
+                            if (item.getAttribute('href') === '#' + sectionId) {
+                                item.classList.add('active');
+                            }
+                        });
+                    }
+                });
+                const header = document.querySelector('header');
+                const navigation = document.querySelector('.navigation');
+                if (scrollPosition > header.offsetHeight / 2) {
+                    navigation.style.opacity = '1';
+                } else {
+                    navigation.style.opacity = '0';
+                }
+            });
+            
+            // Keyboard navigation for lightbox
+            document.addEventListener('keydown', function(e) {
+                if (lightbox.classList.contains('active')) {
+                    if (e.key === 'Escape') {
+                        lightbox.classList.remove('active');
+                    } else if (e.key === 'ArrowLeft') {
+                        currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                        updateLightbox();
+                    } else if (e.key === 'ArrowRight') {
+                        currentIndex = (currentIndex + 1) % currentImages.length;
+                        updateLightbox();
+                    }
+                }
+            });
+            
+            // Optimize for mobile
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                // Reduce particle count on mobile
+                while (particlesContainer.childElementCount > 25) {
+                    particlesContainer.removeChild(particlesContainer.lastChild);
+                }
+                
+                // Add swipe detection for lightbox
+                let touchstartX = 0;
+                let touchendX = 0;
+                
+                lightbox.addEventListener('touchstart', function(e) {
+                    touchstartX = e.changedTouches[0].screenX;
+                });
+                
+                lightbox.addEventListener('touchend', function(e) {
+                    touchendX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                });
+                
+                function handleSwipe() {
+                    if (touchendX < touchstartX - 50) {
+                        // Swipe left, go to next
+                        currentIndex = (currentIndex + 1) % currentImages.length;
+                        updateLightbox();
+                    }
+                    if (touchendX > touchstartX + 50) {
+                        // Swipe right, go to previous
+                        currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                        updateLightbox();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
