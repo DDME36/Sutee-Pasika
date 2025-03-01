@@ -683,6 +683,7 @@
             border-radius: 10px;
             overflow: hidden;
             margin-bottom: 20px;
+            cursor: pointer;
         }
         
         .map-image {
@@ -857,9 +858,23 @@
         .gallery-item:nth-child(5) { grid-column: 2 / 3; grid-row: 2 / 3; animation: float-up-down 5s infinite ease-in-out; }
         .gallery-item:nth-child(6) { grid-column: 3 / 4; grid-row: 2 / 3; animation: float-left-right 6s infinite ease-in-out; }
         
+        /* เพิ่มแอนิเมชัน floating */
+        @keyframes float-up-down {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        
+        @keyframes float-left-right {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+        
         .gallery-item:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            animation-play-state: paused; /* หยุดแอนิเมชันเมื่อ hover */
         }
         
         .gallery-image {
@@ -1084,6 +1099,8 @@
             max-height: 90vh;
             border: 5px solid var(--white);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+            cursor: zoom-in;
         }
         
         .lightbox-close {
@@ -1222,6 +1239,9 @@
             .button-container {
                 flex-direction: column;
                 align-items: center;
+            }
+            .lightbox-image {
+                touch-action: pinch-zoom;
             }
         }
         
@@ -1369,7 +1389,7 @@
                     <div class="coordinates">18°28'36.9"N 100°23'58.8"E</div>
                 </div>
                 <div class="map-placeholder">
-                    <img src="assets/images/map/venue-map.png" alt="แผนที่สถานที่จัดงาน" class="map-image">
+                    <img src="assets/images/map/venue-map.png" alt="แผนที่สถานที่จัดงาน" class="map-image venue-map" data-lightbox="venue">
                 </div>
                 <div class="button-container">
                     <a href="https://www.google.com/maps/place/18%C2%B028'36.9%22N+100%C2%B023'58.8%22E/@18.4769124,100.3996662,17z/data=!3m1!4b1!4m4!3m3!8m2!3d18.4769124!4d100.3996662?entry=ttu&g_ep=EgoyMDI1MDIyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="button">
@@ -1772,6 +1792,7 @@
                 });
             });
 
+            const venueMap = document.querySelector('.venue-map');
             const galleryItems = document.querySelectorAll('.gallery-item');
             const routeItems = document.querySelectorAll('.route-item');
             const lightbox = document.getElementById('lightbox');
@@ -1785,6 +1806,13 @@
             let currentIndex = 0;
             let currentType = '';
 
+            if (venueMap) {
+                venueMap.addEventListener('click', function() {
+                    const images = [this];
+                    openLightbox(images, 0, 'venue');
+                });
+            }
+
             function openLightbox(images, index, type) {
                 currentImages = images;
                 currentIndex = index;
@@ -1792,8 +1820,16 @@
                 lightboxImage.src = images[currentIndex].src;
                 if (type === 'gallery') {
                     lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
+                    lightboxPrev.style.display = 'block';
+                    lightboxNext.style.display = 'block';
                 } else if (type === 'route') {
                     lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
+                    lightboxPrev.style.display = 'block';
+                    lightboxNext.style.display = 'block';
+                } else if (type === 'venue') {
+                    lightboxCaption.textContent = 'แผนที่สถานที่จัดงาน';
+                    lightboxPrev.style.display = 'none';
+                    lightboxNext.style.display = 'none';
                 }
                 lightbox.classList.add('active');
             }
@@ -1804,6 +1840,8 @@
                     lightboxCaption.textContent = galleryItems[currentIndex].querySelector('.gallery-caption').textContent;
                 } else if (currentType === 'route') {
                     lightboxCaption.textContent = `เส้นทาง ${currentIndex + 1}/14`;
+                } else if (currentType === 'venue') {
+                    lightboxCaption.textContent = 'แผนที่สถานที่จัดงาน';
                 }
             }
 
@@ -1869,10 +1907,10 @@
                 if (lightbox.classList.contains('active')) {
                     if (e.key === 'Escape') {
                         lightbox.classList.remove('active');
-                    } else if (e.key === 'ArrowLeft') {
+                    } else if (e.key === 'ArrowLeft' && currentType !== 'venue') {
                         currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
                         updateLightbox();
-                    } else if (e.key === 'ArrowRight') {
+                    } else if (e.key === 'ArrowRight' && currentType !== 'venue') {
                         currentIndex = (currentIndex + 1) % currentImages.length;
                         updateLightbox();
                     }
@@ -1897,13 +1935,15 @@
                 });
 
                 function handleSwipe() {
-                    if (touchendX < touchstartX - 50) {
-                        currentIndex = (currentIndex + 1) % currentImages.length;
-                        updateLightbox();
-                    }
-                    if (touchendX > touchstartX + 50) {
-                        currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
-                        updateLightbox();
+                    if (currentType !== 'venue') {
+                        if (touchendX < touchstartX - 50) {
+                            currentIndex = (currentIndex + 1) % currentImages.length;
+                            updateLightbox();
+                        }
+                        if (touchendX > touchstartX + 50) {
+                            currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+                            updateLightbox();
+                        }
                     }
                 }
             }
@@ -2010,41 +2050,41 @@
             setupIOSAudioHandling();
         });
     </script>
-        <script>
-            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-            if (isIOS || isSafari) {
-                var css = `
-                    html, body { 
-                        background-color: #1a2b63 !important; 
-                        min-height: 100% !important;
-                    }
-                    body:before {
-                        content: '';
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: linear-gradient(to bottom, #1a2b63, #4169ab, #324b7d);
-                        z-index: 0;
-                    }
-                `;
-                
-                var style = document.createElement('style');
-                style.type = 'text/css';
-                if (style.styleSheet) {
-                    style.styleSheet.cssText = css;
-                } else {
-                    style.appendChild(document.createTextNode(css));
+    <script>
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        if (isIOS || isSafari) {
+            var css = `
+                html, body { 
+                    background-color: #1a2b63 !important; 
+                    min-height: 100% !important;
                 }
-                document.head.appendChild(style);
+                body:before {
+                    content: '';
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(to bottom, #1a2b63, #4169ab, #324b7d);
+                    z-index: 0;
+                }
+            `;
+            
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+            } else {
+                style.appendChild(document.createTextNode(css));
             }
-        </script>
-        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91959a67cd6abcd1',t:'MTc0MDgwMDExMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9195f2607eccc024',t:'MTc0MDgwMzcxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9196102ee809bfae',t:'MTc0MDgwNDkzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91962b574c47afc5',t:'MTc0MDgwNjA1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9199421b89d86761',t:'MTc0MDgzODQ0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-    </body>
-    </html>
+            document.head.appendChild(style);
+        }
+    </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91959a67cd6abcd1',t:'MTc0MDgwMDExMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9195f2607eccc024',t:'MTc0MDgwMzcxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9196102ee809bfae',t:'MTc0MDgwNDkzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91962b574c47afc5',t:'MTc0MDgwNjA1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9199577c3dcfb078',t:'MTc0MDgzOTMxNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
