@@ -113,8 +113,9 @@
             left: 20px;
             z-index: 100;
             display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
             align-items: center;
-            gap: 10px;
             background: rgba(0, 0, 0, 0.3);
             padding: 8px 12px;
             border-radius: 30px;
@@ -164,6 +165,42 @@
         
         .audio-control audio {
             display: none;
+        }
+        
+        .volume-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 5px;
+        }
+
+        .volume-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .volume-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--white);
+        }
+
+        .volume-indicator {
+            color: var(--white);
+            font-size: 0.8rem;
+            margin-left: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 30px;
+            text-align: center;
         }
         
         .music-prompt {
@@ -697,26 +734,6 @@
             transform: scale(1.1);
         }
         
-        .route-item:nth-child(odd) {
-            animation: float-up-down 4s infinite ease-in-out;
-        }
-        
-        .route-item:nth-child(even) {
-            animation: float-left-right 5s infinite ease-in-out;
-        }
-        
-        @keyframes float-up-down {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-        
-        @keyframes float-left-right {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-            100% { transform: translateX(0); }
-        }
-        
         .route-overlay {
             position: absolute;
             top: 0;
@@ -755,6 +772,14 @@
         
         .route-gallery .last-row .route-item {
             width: 20%;
+        }
+        
+        .route-description {
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Mali', cursive;
+            font-size: 1.1rem;
+            color: var(--light-gold);
         }
         
         .button {
@@ -881,6 +906,7 @@
             position: relative;
             max-width: 800px;
             margin: 0 auto;
+            height: 300px; /* กำหนดความสูงแน่นอนเพื่อควบคุมระยะ */
         }
         
         .timeline::after {
@@ -896,7 +922,7 @@
         
         .timeline-item {
             padding: 20px 40px;
-            position: relative;
+            position: absolute;
             width: 50%;
             box-sizing: border-box;
         }
@@ -906,18 +932,43 @@
             position: absolute;
             width: 20px;
             height: 20px;
-            right: -10px;
             background-color: var(--light-gold);
             border: 4px solid var(--gold);
-            top: 22px;
             border-radius: 50%;
             z-index: 1;
         }
         
         .left { left: 0; }
         .right { left: 50%; }
-        .right::after {
+        .right::after { left: -10px; }
+        
+        /* [เปลี่ยนแปลง] ตั้งตำแหน่งกล่องเนื้อหา */
+        .timeline-item:nth-child(1) {
+            top: 0; /* บนสุด */
+        }
+        .timeline-item:nth-child(2) {
+            top: 30%; /* ตรงกลาง */
+            transform: translateY(-50%);
+        }
+        .timeline-item:nth-child(3) {
+            bottom: 0; /* ล่างสุด */
+        }
+        
+        /* [เปลี่ยนแปลง] ตั้งตำแหน่งวงกลมให้อยู่ต้น, กลาง, ปลายของเส้นสีเหลือง */
+        .timeline-item:nth-child(1)::after {
+            right: -10px;
+            top: 0; /* ต้นของเส้น */
+        }
+        
+        .timeline-item:nth-child(2)::after {
             left: -10px;
+            top: 50%; /* ตรงกลางของเส้น */
+            transform: translateY(-50%);
+        }
+        
+        .timeline-item:nth-child(3)::after {
+            right: -10px;
+            bottom: 0; /* ปลายของเส้น */
         }
         
         .timeline-content {
@@ -1068,8 +1119,23 @@
             .subtitle { font-size: 1.2rem; }
             .names { font-size: 2rem; }
             .timeline::after { left: 31px; }
-            .timeline-item { width: 100%; padding-left: 70px; padding-right: 20px; }
-            .timeline-item::after { left: 21px; top: 22px; }
+            .timeline-item { 
+                width: 100%; 
+                padding-left: 70px; 
+                padding-right: 20px;
+                position: relative; /* เปลี่ยนกลับเป็น relative สำหรับ responsive */
+            }
+            .timeline-item::after { 
+                left: 21px; 
+                top: 22px;
+            }
+            /* ปรับตำแหน่งวงกลมสำหรับ responsive */
+            .timeline-item:nth-child(1)::after { top: 22px; }
+            .timeline-item:nth-child(2)::after { top: 22px; transform: none; }
+            .timeline-item:nth-child(3)::after { bottom: auto; top: 22px; }
+            .timeline-item:nth-child(1) { top: auto; }
+            .timeline-item:nth-child(2) { top: auto; transform: none; }
+            .timeline-item:nth-child(3) { bottom: auto; }
             .right { left: 0; }
             .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 200px); height: 620px; }
             .gallery-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 2; }
@@ -1080,7 +1146,6 @@
             .gallery-item:nth-child(6) { grid-column: 2 / 3; grid-row: 3 / 4; }
             .route-item { width: calc(33.33% - 10px); }
             .route-gallery .last-row .route-item { width: 25%; }
-            
             body {
                 background-color: var(--main-dark-blue);
                 background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
@@ -1088,19 +1153,15 @@
                 background-size: 100% 100vh;
                 min-height: 100vh;
             }
-            
             .music-prompt-content {
                 padding: 30px 15px;
             }
-            
             .music-prompt h2 {
                 font-size: 2rem;
             }
-            
             .music-prompt p {
                 font-size: 1rem;
             }
-            
             .music-prompt-button {
                 padding: 12px 30px;
                 font-size: 1rem;
@@ -1119,22 +1180,27 @@
             .gallery-item:nth-child(6) { grid-column: 1 / 2; grid-row: 6 / 7; }
             .route-item { width: calc(50% - 7.5px); }
             .route-gallery .last-row .route-item { width: 33%; }
-            
             body {
                 background-color: var(--main-dark-blue);
                 background-image: linear-gradient(to bottom, var(--main-dark-blue), var(--main-medium-blue), var(--main-royal-blue));
                 background-size: 100% 100%;
             }
-            
             .audio-control {
                 bottom: 15px;
                 left: 15px;
                 padding: 5px 10px;
             }
-            
             .audio-control button {
                 width: 32px;
                 height: 32px;
+            }
+            .volume-btn {
+                width: 32px;
+                height: 32px;
+            }
+            .volume-btn svg {
+                width: 16px;
+                height: 16px;
             }
         }
         
@@ -1152,65 +1218,6 @@
             body {
                 background-color: var(--main-dark-blue);
             }
-        }
-
-        /* [จุดเปลี่ยนแปลง 1] - เพิ่ม CSS ใหม่สำหรับปุ่มควบคุมระดับเสียง */
-        .volume-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            margin-left: 5px;
-        }
-
-        .volume-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.1);
-        }
-
-        .volume-btn svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--white);
-        }
-
-        /* ปรับแต่ง audio control */
-        .audio-control {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            align-items: center;
-        }
-
-        /* ปรับให้รองรับมือถือ */
-        @media (max-width: 480px) {
-            .volume-btn {
-                width: 32px;
-                height: 32px;
-            }
-            
-            .volume-btn svg {
-                width: 16px;
-                height: 16px;
-            }
-        }
-
-        /* แสดงระดับเสียงปัจจุบัน */
-        .volume-indicator {
-            color: var(--white);
-            font-size: 0.8rem;
-            margin-left: 5px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 5px;
-            border-radius: 10px;
-            min-width: 30px;
-            text-align: center;
         }
     </style>
 </head>
@@ -1266,19 +1273,16 @@
             <div class="title-decoration">❦</div>
             <h1>เชิญร่วมงานมงคลสมรส</h1>
             <p class="subtitle">ด้วยความยินดี ขอเรียนเชิญท่านมาร่วมเป็นเกียรติในวันพิเศษของเรา</p>
-            
             <div class="names">
                 <span>คุณสุธี</span>
                 <span class="and">&</span>
                 <span>คุณพสิกา</span>
             </div>
-            
             <div class="date-container">
                 <div class="date">วันอาทิตย์ที่ 2 มีนาคม 2568</div>
                 <div class="date">ณ 67/1 บ้านแม่แรม ตำบลเตาปูน อำเภอเมือง จังหวัดแพร่</div>
             </div>
         </div>
-        
         <div class="scroll-down" id="scroll-down">
             <span></span>
             <span></span>
@@ -1291,7 +1295,6 @@
             <div class="section-title" data-aos="fade-up">
                 <h2>แผนที่และเส้นทางเดินทาง</h2>
             </div>
-            
             <div class="map-container" data-aos="fade-up" data-aos-delay="200">
                 <div class="map-info">
                     <h3 class="map-title">สถานที่จัดงาน</h3>
@@ -1302,15 +1305,12 @@
                     </p>
                     <div class="coordinates">18°28'36.9"N 100°23'58.8"E</div>
                 </div>
-                
                 <div class="map-placeholder">
                     <img src="assets/images/map/venue-map.png" alt="แผนที่สถานที่จัดงาน" class="map-image">
                 </div>
-                
                 <a href="https://www.google.com/maps/place/18%C2%B028'36.9%22N+100%C2%B023'58.8%22E/@18.4769124,100.3996662,17z/data=!3m1!4b1!4m4!3m3!8m2!3d18.4769124!4d100.3996662?entry=ttu&g_ep=EgoyMDI1MDIyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="button">
                     กดนำทางด้วย Google Maps
                 </a>
-                
                 <div class="route-gallery">
                     <div class="route-item" data-aos="fade-up" data-aos-delay="100">
                         <img src="assets/images/route/route1.jpg" alt="เส้นทาง 1">
@@ -1399,6 +1399,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="route-description">รูปเส้นทางไปงานแต่ง</div>
             </div>
         </div>
     </section>
@@ -1408,7 +1409,6 @@
             <div class="section-title" data-aos="fade-up">
                 <h2>ภาพพรีเวดดิ้ง</h2>
             </div>
-            
             <div class="gallery-grid">
                 <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
                     <img src="assets/images/gallery/prewedding1.jpg" alt="ภาพพรีเวดดิ้ง 1" class="gallery-image">
@@ -1455,7 +1455,6 @@
             <div class="section-title" data-aos="fade-up">
                 <h2>กำหนดการ</h2>
             </div>
-            
             <div class="timeline">
                 <div class="timeline-item left" data-aos="fade-right">
                     <div class="timeline-content">
@@ -1516,11 +1515,11 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const particlesContainer = document.querySelector('.gold-particles');
-            const particleCount = 50;
+            const particleCount = 30;
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 5 + 2;
+                const size = Math.random() * 7 + 3;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 particle.style.left = Math.random() * 100 + 'vw';
@@ -1537,31 +1536,21 @@
             const playIcon = document.getElementById('play-icon');
             const pauseIcon = document.getElementById('pause-icon');
 
-            // [จุดเปลี่ยนแปลง 2] - แก้ไขส่วนควบคุมเสียง (แทนที่ audio.volume = 0.2 เดิม)
-            let volumeLevel = 0.2; // กำหนดค่าเริ่มต้น
+            let volumeLevel = 0.2;
 
-            // ฟังก์ชันสำหรับตั้งค่าระดับเสียง
             function setVolume(level) {
-                // จำกัดค่าให้อยู่ระหว่าง 0-1
                 level = Math.max(0, Math.min(1, level));
                 volumeLevel = level;
-                
                 try {
-                    // ตั้งค่าระดับเสียง
                     audio.volume = level;
-                    
-                    // อัพเดทตัวแสดงระดับเสียง (ถ้ามี)
                     const volumeIndicator = document.querySelector('.volume-indicator');
                     if (volumeIndicator) {
                         volumeIndicator.textContent = Math.round(level * 100) + '%';
                     }
-                    
                     console.log("Volume set to:", level);
                 } catch (e) {
                     console.error("Error setting volume:", e);
                 }
-                
-                // บันทึกค่าลง localStorage เพื่อจำค่าไว้
                 try {
                     localStorage.setItem('preferredVolume', level.toString());
                 } catch (e) {
@@ -1569,7 +1558,6 @@
                 }
             }
 
-            // โหลดค่าระดับเสียงจาก localStorage (ถ้ามี)
             try {
                 const savedVolume = localStorage.getItem('preferredVolume');
                 if (savedVolume !== null) {
@@ -1579,10 +1567,8 @@
                 console.log("Could not retrieve volume preference");
             }
 
-            // ตั้งค่าระดับเสียงเริ่มต้น
             setVolume(volumeLevel);
 
-            // สร้างปุ่มควบคุมระดับเสียงเพิ่มลด
             const volumeDownBtn = document.createElement('button');
             volumeDownBtn.className = 'volume-btn';
             volumeDownBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/></svg>';
@@ -1593,27 +1579,22 @@
             volumeUpBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
             volumeUpBtn.title = "เพิ่มเสียง";
 
-            // สร้างตัวแสดงระดับเสียง
             const volumeIndicator = document.createElement('span');
             volumeIndicator.className = 'volume-indicator';
             volumeIndicator.textContent = Math.round(volumeLevel * 100) + '%';
 
-            // เพิ่มปุ่มเข้าไปในส่วนควบคุมเสียง
             const audioControl = document.querySelector('.audio-control');
             audioControl.appendChild(volumeDownBtn);
             audioControl.appendChild(volumeIndicator);
             audioControl.appendChild(volumeUpBtn);
 
-            // เพิ่ม event listeners สำหรับปุ่มควบคุมระดับเสียง
             volumeDownBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                // ลดระดับเสียงลง 10% 
                 setVolume(volumeLevel - 0.1);
             });
 
             volumeUpBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                // เพิ่มระดับเสียงขึ้น 10%
                 setVolume(volumeLevel + 0.1);
             });
 
@@ -1894,34 +1875,24 @@
                 setTimeout(enforceMobileBackground, 100);
             });
 
-            // [จุดเปลี่ยนแปลง 3] - เพิ่มการจัดการกับ iOS Audio API
             function setupIOSAudioHandling() {
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-                
                 if (isIOS) {
                     console.log("iOS device detected, applying special audio handling");
-                    
-                    // iOS ต้องการการโต้ตอบจากผู้ใช้ก่อนเล่นเสียง
                     document.addEventListener('touchstart', function() {
-                        // เตรียมเสียงเมื่อผู้ใช้แตะหน้าจอ
                         if (audio.paused) {
                             audio.load();
                         }
                     }, {once: true});
-                    
-                    // แก้ไขการฟังคลิกสำหรับปุ่มเล่น/หยุด
                     playPauseBtn.addEventListener('touchend', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        
                         if (audio.paused) {
-                            // โหลดและเล่นเสียง
                             audio.load();
                             setTimeout(() => {
                                 audio.play().then(() => {
                                     playIcon.style.display = 'none';
                                     pauseIcon.style.display = 'block';
-                                    // พยายามตั้งค่าระดับเสียงอีกครั้ง
                                     setTimeout(() => setVolume(volumeLevel), 100);
                                 }).catch(e => console.log("iOS play failed:", e));
                             }, 100);
@@ -1931,19 +1902,14 @@
                             pauseIcon.style.display = 'none';
                         }
                     }, { passive: false });
-                    
-                    // แก้ไขการฟังคลิกสำหรับปุ่มเริ่มเล่นเพลง
                     startMusicBtn.addEventListener('touchend', function(e) {
                         e.preventDefault();
                         showContent();
-                        
-                        // iOS ต้องมีการโต้ตอบโดยตรงก่อนเล่นเสียง
                         audio.load();
                         setTimeout(() => {
                             audio.play().then(() => {
                                 playIcon.style.display = 'none';
                                 pauseIcon.style.display = 'block';
-                                // ตั้งค่าระดับเสียงซ้ำหลังจากเริ่มเล่น
                                 setTimeout(() => setVolume(volumeLevel), 100);
                             }).catch(error => {
                                 console.log("iOS audio play failed:", error);
@@ -1952,57 +1918,40 @@
                             });
                         }, 100);
                     }, { passive: false });
-                    
-                    // จัดการกับปุ่มควบคุมระดับเสียงสำหรับ iOS
                     volumeUpBtn.addEventListener('touchend', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         setVolume(volumeLevel + 0.1);
-                        // พยายามบังคับใช้การตั้งค่าระดับเสียงซ้ำ
-                        setTimeout(() => {
-                            audio.volume = volumeLevel;
-                        }, 50);
+                        setTimeout(() => { audio.volume = volumeLevel; }, 50);
                     }, { passive: false });
-                    
                     volumeDownBtn.addEventListener('touchend', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
                         setVolume(volumeLevel - 0.1);
-                        // พยายามบังคับใช้การตั้งค่าระดับเสียงซ้ำ
-                        setTimeout(() => {
-                            audio.volume = volumeLevel;
-                        }, 50);
+                        setTimeout(() => { audio.volume = volumeLevel; }, 50);
                     }, { passive: false });
-                    
-                                        // จัดการเมื่อเปลี่ยนแท็บหรือออกจากแอป (ต่อจากจุดที่ขาด)
-                                        document.addEventListener('visibilitychange', function() {
+                    document.addEventListener('visibilitychange', function() {
                         if (!document.hidden && !audio.paused) {
-                            // พยายามเล่นใหม่เมื่อกลับมา
                             audio.pause();
                             audio.play().catch(e => console.log("Resume playback failed:", e));
-                            // ตั้งค่าระดับเสียงอีกครั้ง
                             setTimeout(() => setVolume(volumeLevel), 100);
                         }
                     });
                 }
             }
 
-            // เรียกใช้ฟังก์ชันสำหรับจัดการเสียงบน iOS
             setupIOSAudioHandling();
         });
     </script>
-
     <script>
         var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-        
         if (isIOS || isSafari) {
             var css = `
                 html, body { 
                     background-color: #1a2b63 !important; 
                     min-height: 100% !important;
                 }
-                
                 body:before {
                     content: '';
                     position: fixed;
@@ -2028,3 +1977,4 @@
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91959a67cd6abcd1',t:'MTc0MDgwMDExMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
+                       
