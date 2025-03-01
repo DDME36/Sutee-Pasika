@@ -1153,6 +1153,65 @@
                 background-color: var(--main-dark-blue);
             }
         }
+
+        /* [จุดเปลี่ยนแปลง 1] - เพิ่ม CSS ใหม่สำหรับปุ่มควบคุมระดับเสียง */
+        .volume-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 5px;
+        }
+
+        .volume-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .volume-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--white);
+        }
+
+        /* ปรับแต่ง audio control */
+        .audio-control {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+        }
+
+        /* ปรับให้รองรับมือถือ */
+        @media (max-width: 480px) {
+            .volume-btn {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .volume-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        /* แสดงระดับเสียงปัจจุบัน */
+        .volume-indicator {
+            color: var(--white);
+            font-size: 0.8rem;
+            margin-left: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 30px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -1478,7 +1537,85 @@
             const playIcon = document.getElementById('play-icon');
             const pauseIcon = document.getElementById('pause-icon');
 
-            audio.volume = 0.2;
+            // [จุดเปลี่ยนแปลง 2] - แก้ไขส่วนควบคุมเสียง (แทนที่ audio.volume = 0.2 เดิม)
+            let volumeLevel = 0.2; // กำหนดค่าเริ่มต้น
+
+            // ฟังก์ชันสำหรับตั้งค่าระดับเสียง
+            function setVolume(level) {
+                // จำกัดค่าให้อยู่ระหว่าง 0-1
+                level = Math.max(0, Math.min(1, level));
+                volumeLevel = level;
+                
+                try {
+                    // ตั้งค่าระดับเสียง
+                    audio.volume = level;
+                    
+                    // อัพเดทตัวแสดงระดับเสียง (ถ้ามี)
+                    const volumeIndicator = document.querySelector('.volume-indicator');
+                    if (volumeIndicator) {
+                        volumeIndicator.textContent = Math.round(level * 100) + '%';
+                    }
+                    
+                    console.log("Volume set to:", level);
+                } catch (e) {
+                    console.error("Error setting volume:", e);
+                }
+                
+                // บันทึกค่าลง localStorage เพื่อจำค่าไว้
+                try {
+                    localStorage.setItem('preferredVolume', level.toString());
+                } catch (e) {
+                    console.log("Could not save volume preference");
+                }
+            }
+
+            // โหลดค่าระดับเสียงจาก localStorage (ถ้ามี)
+            try {
+                const savedVolume = localStorage.getItem('preferredVolume');
+                if (savedVolume !== null) {
+                    volumeLevel = parseFloat(savedVolume);
+                }
+            } catch (e) {
+                console.log("Could not retrieve volume preference");
+            }
+
+            // ตั้งค่าระดับเสียงเริ่มต้น
+            setVolume(volumeLevel);
+
+            // สร้างปุ่มควบคุมระดับเสียงเพิ่มลด
+            const volumeDownBtn = document.createElement('button');
+            volumeDownBtn.className = 'volume-btn';
+            volumeDownBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/></svg>';
+            volumeDownBtn.title = "ลดเสียง";
+
+            const volumeUpBtn = document.createElement('button');
+            volumeUpBtn.className = 'volume-btn';
+            volumeUpBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>';
+            volumeUpBtn.title = "เพิ่มเสียง";
+
+            // สร้างตัวแสดงระดับเสียง
+            const volumeIndicator = document.createElement('span');
+            volumeIndicator.className = 'volume-indicator';
+            volumeIndicator.textContent = Math.round(volumeLevel * 100) + '%';
+
+            // เพิ่มปุ่มเข้าไปในส่วนควบคุมเสียง
+            const audioControl = document.querySelector('.audio-control');
+            audioControl.appendChild(volumeDownBtn);
+            audioControl.appendChild(volumeIndicator);
+            audioControl.appendChild(volumeUpBtn);
+
+            // เพิ่ม event listeners สำหรับปุ่มควบคุมระดับเสียง
+            volumeDownBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // ลดระดับเสียงลง 10% 
+                setVolume(volumeLevel - 0.1);
+            });
+
+            volumeUpBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // เพิ่มระดับเสียงขึ้น 10%
+                setVolume(volumeLevel + 0.1);
+            });
 
             function showContent() {
                 musicPrompt.classList.add('hidden');
@@ -1756,6 +1893,102 @@
             window.addEventListener('orientationchange', function() {
                 setTimeout(enforceMobileBackground, 100);
             });
+
+            // [จุดเปลี่ยนแปลง 3] - เพิ่มการจัดการกับ iOS Audio API
+            function setupIOSAudioHandling() {
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+                
+                if (isIOS) {
+                    console.log("iOS device detected, applying special audio handling");
+                    
+                    // iOS ต้องการการโต้ตอบจากผู้ใช้ก่อนเล่นเสียง
+                    document.addEventListener('touchstart', function() {
+                        // เตรียมเสียงเมื่อผู้ใช้แตะหน้าจอ
+                        if (audio.paused) {
+                            audio.load();
+                        }
+                    }, {once: true});
+                    
+                    // แก้ไขการฟังคลิกสำหรับปุ่มเล่น/หยุด
+                    playPauseBtn.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        if (audio.paused) {
+                            // โหลดและเล่นเสียง
+                            audio.load();
+                            setTimeout(() => {
+                                audio.play().then(() => {
+                                    playIcon.style.display = 'none';
+                                    pauseIcon.style.display = 'block';
+                                    // พยายามตั้งค่าระดับเสียงอีกครั้ง
+                                    setTimeout(() => setVolume(volumeLevel), 100);
+                                }).catch(e => console.log("iOS play failed:", e));
+                            }, 100);
+                        } else {
+                            audio.pause();
+                            playIcon.style.display = 'block';
+                            pauseIcon.style.display = 'none';
+                        }
+                    }, { passive: false });
+                    
+                    // แก้ไขการฟังคลิกสำหรับปุ่มเริ่มเล่นเพลง
+                    startMusicBtn.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        showContent();
+                        
+                        // iOS ต้องมีการโต้ตอบโดยตรงก่อนเล่นเสียง
+                        audio.load();
+                        setTimeout(() => {
+                            audio.play().then(() => {
+                                playIcon.style.display = 'none';
+                                pauseIcon.style.display = 'block';
+                                // ตั้งค่าระดับเสียงซ้ำหลังจากเริ่มเล่น
+                                setTimeout(() => setVolume(volumeLevel), 100);
+                            }).catch(error => {
+                                console.log("iOS audio play failed:", error);
+                                playIcon.style.display = 'block';
+                                pauseIcon.style.display = 'none';
+                            });
+                        }, 100);
+                    }, { passive: false });
+                    
+                    // จัดการกับปุ่มควบคุมระดับเสียงสำหรับ iOS
+                    volumeUpBtn.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setVolume(volumeLevel + 0.1);
+                        // พยายามบังคับใช้การตั้งค่าระดับเสียงซ้ำ
+                        setTimeout(() => {
+                            audio.volume = volumeLevel;
+                        }, 50);
+                    }, { passive: false });
+                    
+                    volumeDownBtn.addEventListener('touchend', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setVolume(volumeLevel - 0.1);
+                        // พยายามบังคับใช้การตั้งค่าระดับเสียงซ้ำ
+                        setTimeout(() => {
+                            audio.volume = volumeLevel;
+                        }, 50);
+                    }, { passive: false });
+                    
+                                        // จัดการเมื่อเปลี่ยนแท็บหรือออกจากแอป (ต่อจากจุดที่ขาด)
+                                        document.addEventListener('visibilitychange', function() {
+                        if (!document.hidden && !audio.paused) {
+                            // พยายามเล่นใหม่เมื่อกลับมา
+                            audio.pause();
+                            audio.play().catch(e => console.log("Resume playback failed:", e));
+                            // ตั้งค่าระดับเสียงอีกครั้ง
+                            setTimeout(() => setVolume(volumeLevel), 100);
+                        }
+                    });
+                }
+            }
+
+            // เรียกใช้ฟังก์ชันสำหรับจัดการเสียงบน iOS
+            setupIOSAudioHandling();
         });
     </script>
 
@@ -1792,5 +2025,6 @@
             document.head.appendChild(style);
         }
     </script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91959a67cd6abcd1',t:'MTc0MDgwMDExMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
