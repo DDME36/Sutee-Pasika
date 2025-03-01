@@ -696,6 +696,13 @@
             transition: all 0.3s ease;
         }
         
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
         .route-gallery {
             display: flex;
             flex-wrap: wrap;
@@ -790,7 +797,7 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: 500;
-            margin-top: 20px;
+            margin-top: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
             border: none;
@@ -898,7 +905,6 @@
             font-family: 'Mali', cursive;
         }
         
-        /* Updated Timeline Section */
         .timeline-section {
             position: relative;
             background-color: rgba(0, 0, 0, 0.1);
@@ -909,10 +915,9 @@
             position: relative;
             max-width: 800px;
             margin: 0 auto;
-            height: 400px; /* Fixed height for timeline */
+            height: 400px;
         }
 
-        /* Center vertical line */
         .timeline::after {
             content: '';
             position: absolute;
@@ -931,24 +936,22 @@
             box-sizing: border-box;
         }
 
-        /* Specific positioning for each item */
         .timeline-item:nth-child(1) {
-            top: 0; /* Top item */
+            top: 0;
             left: 0;
         }
 
         .timeline-item:nth-child(2) {
-            top: 40%; /* Middle item */
+            top: 40%;
             transform: translateY(-50%);
-            left: 50%; /* Right side */
+            left: 50%;
         }
 
         .timeline-item:nth-child(3) {
-            bottom: 0; /* Bottom item */
+            bottom: 0;
             left: 0;
         }
 
-        /* Left/Right alignment */
         .left {
             padding-right: 40px;
         }
@@ -957,7 +960,6 @@
             padding-left: 40px;
         }
 
-        /* Timeline dots */
         .timeline-item::after {
             content: '';
             position: absolute;
@@ -969,21 +971,20 @@
             z-index: 1;
         }
 
-        /* Dot positions */
         .timeline-item:nth-child(1)::after {
             right: -14px;
-            top: 0; /* Top of the line */
+            top: 0;
         }
 
         .timeline-item:nth-child(2)::after {
             left: -14px;
-            top: 0; /* Center of the box */
+            top: 0;
             transform: translateY(50%);
         }
 
         .timeline-item:nth-child(3)::after {
             right: -14px;
-            bottom: 0; /* Bottom of the line */
+            bottom: 0;
         }
 
         .timeline-content {
@@ -996,14 +997,13 @@
             max-width: 350px;
         }
 
-        /* Adjust content positioning */
         .timeline-item:nth-child(1) .timeline-content {
-            margin-top: -10px; /* Align with top dot */
+            margin-top: -10px;
         }
 
         .timeline-item:nth-child(3) .timeline-content {
             position: absolute;
-            bottom: -10px; /* Align with bottom dot */
+            bottom: -10px;
         }
 
         .timeline-time {
@@ -1146,14 +1146,13 @@
             .subtitle { font-size: 1.2rem; }
             .names { font-size: 2rem; }
             
-            /* Timeline responsive */
             .timeline {
                 height: auto;
                 padding: 60px 0;
             }
             
             .timeline::after {
-                left: 30px; /* Move line to left */
+                left: 30px;
             }
             
             .timeline-item {
@@ -1219,6 +1218,10 @@
             .music-prompt-button {
                 padding: 12px 30px;
                 font-size: 1rem;
+            }
+            .button-container {
+                flex-direction: column;
+                align-items: center;
             }
         }
         
@@ -1340,7 +1343,7 @@
             </div>
             <div class="date-container">
                 <div class="date">วันอาทิตย์ที่ 2 มีนาคม 2568</div>
-                <div class="date">ณ 67/1 บ้านแม่แรม ตำบลเตาปูน อำเภอสอง จังหวัดแพร่</div>
+                <div class="date">ณ 67/1 บ้านแม่แรม ตำบลเตาปูน อำเภอเมือง จังหวัดแพร่</div>
             </div>
         </div>
         <div class="scroll-down" id="scroll-down">
@@ -1368,9 +1371,14 @@
                 <div class="map-placeholder">
                     <img src="assets/images/map/venue-map.png" alt="แผนที่สถานที่จัดงาน" class="map-image">
                 </div>
-                <a href="https://www.google.com/maps/place/18%C2%B028'36.9%22N+100%C2%B023'58.8%22E/@18.4769124,100.3996662,17z/data=!3m1!4b1!4m4!3m3!8m2!3d18.4769124!4d100.3996662?entry=ttu&g_ep=EgoyMDI1MDIyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="button">
-                    กดนำทางด้วย Google Maps
-                </a>
+                <div class="button-container">
+                    <a href="https://www.google.com/maps/place/18%C2%B028'36.9%22N+100%C2%B023'58.8%22E/@18.4769124,100.3996662,17z/data=!3m1!4b1!4m4!3m3!8m2!3d18.4769124!4d100.3996662?entry=ttu&g_ep=EgoyMDI1MDIyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="button">
+                        กดนำทางด้วย Google Maps
+                    </a>
+                    <a href="https://maps.apple.com/?address=66/1%20%E0%B8%9E%E0%B8%A3.%206040,%20Song,%20Phrae%2054120,%20Thailand&ll=18.476917,100.399667&q=66/1%20%E0%B8%9E%E0%B8%A3.%206040&t=m" target="_blank" class="button">
+                        กดนำทางด้วย Apple Maps
+                    </a>
+                </div>
                 <div class="route-gallery">
                     <div class="route-item" data-aos="fade-up" data-aos-delay="100">
                         <img src="assets/images/route/route1.jpg" alt="เส้นทาง 1">
@@ -1516,23 +1524,18 @@
                 <h2>กำหนดการ</h2>
             </div>
             <div class="timeline">
-                <!-- Top item -->
                 <div class="timeline-item left" data-aos="fade-right">
                     <div class="timeline-content">
                         <div class="timeline-time">09:00 น.</div>
                         <div class="timeline-event">เริ่มพิธีหมั้น</div>
                     </div>
                 </div>
-
-                <!-- Middle item -->
                 <div class="timeline-item right" data-aos="fade-left">
                     <div class="timeline-content">
                         <div class="timeline-time">10:00 น.</div>
                         <div class="timeline-event">พิธีตามประเพณี</div>
                     </div>
                 </div>
-
-                <!-- Bottom item -->
                 <div class="timeline-item left" data-aos="fade-right">
                     <div class="timeline-content">
                         <div class="timeline-time">12:00 น.</div>
@@ -1612,7 +1615,6 @@
                     if (volumeIndicator) {
                         volumeIndicator.textContent = Math.round(level * 100) + '%';
                     }
-                    console.log("Volume set to:", level);
                 } catch (e) {
                     console.error("Error setting volume:", e);
                 }
@@ -2043,5 +2045,6 @@
         <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9195f2607eccc024',t:'MTc0MDgwMzcxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
         <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9196102ee809bfae',t:'MTc0MDgwNDkzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
         <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91962b574c47afc5',t:'MTc0MDgwNjA1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9199421b89d86761',t:'MTc0MDgzODQ0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
     </body>
     </html>
